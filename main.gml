@@ -136,10 +136,16 @@ spr_bung2b = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel
 spr_bung2c = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/Bungalow13.png",1, true, false, 0,0);
 spr_bung2d = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/Bungalow14.png",1, true, false, 0,0);
 
-spr_bung3a = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/Bungalow21.png",1, true, false, 0,0);
-spr_bung3b = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/Bungalow22.png",1, true, false, 0,0);
-spr_bung3c = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/Bungalow23.png",1, true, false, 0,0);
-spr_bung3d = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/Bungalow24.png",1, true, false, 0,0);
+spr_bung3a = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/House21.png",1, true, false, 0,0);
+spr_bung3b = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/House22.png",1, true, false, 0,0);
+spr_bung3c = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/House23.png",1, true, false, 0,0);
+spr_bung3d = sprite_add("https://raw.githubusercontent.com/tarabaz/magical-voxel-3d-city-model/main/Demo-Image/512px/House24.png",1, true, false, 0,0);
+
+sprite_set_offset(spr_bung3a, sprite_width / 2 , sprite_height + 50);
+sprite_set_offset(spr_bung3b, sprite_width / 2 , sprite_height + 50);
+sprite_set_offset(spr_bung3c, sprite_width / 2 , sprite_height + 50);
+sprite_set_offset(spr_bung3d, sprite_width / 2 , sprite_height + 50);
+
 
 spr_bung1 = [spr_bung1a,spr_bung1b,spr_bung1c,spr_bunga1d]
 spr_bung2 = [spr_bung2a,spr_bung2b,spr_bung2c,spr_bung2d]
@@ -232,8 +238,14 @@ for (var k = 0; k < array_length_1d(map_rotated[0]); k++) {
         default:
             // error imae
         }
+        
+    //if ( floor(player_y_loc) == i && floor(player_x_loc) == k) {
+    	draw_sprite_ext(spr_player[player_angle],1,iso_to_scr_x(player_x_loc,player_y_loc),iso_to_scr_y(player_x_loc,player_y_loc),x_scale * scale_factor,y_scale,0,c_white,1);
+    	//}
+    
     draw_sprite_ext(display_sprite,1,iso_to_scr_x(cx, cy),iso_to_scr_y(cx, cy),x_scale,y_scale,0,c_white,1);
     //draw_sprite_ext(display_sprite,1,i,k*10,x_scale,y_scale,0,c_white,1);
+    
     }
 
 draw_set_halign(fa_left);
@@ -270,7 +282,6 @@ draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 draw_set_colour($333333);
 
-draw_sprite_ext(spr_player[player_angle],1,iso_to_scr_x(player_x_loc,player_y_loc),iso_to_scr_y(player_x_loc,player_y_loc),x_scale * scale_factor,y_scale,0,c_white,1);
 
 #define step //Evento Step
 
@@ -278,7 +289,7 @@ key_e = keyboard_check_released(ord("E")); //tecla e
 key_q = keyboard_check_released(ord("Q")); //tecla cu
 
 if (key_e) {
-	show_debug_message("you pressed E")
+	//show_debug_message("you pressed E " + string(player_x_loc) + " " + string(player_y_loc) )
 	map_angle++;
 	if (map_angle > 3) map_angle = 0;
 	player_angle++;
@@ -289,7 +300,7 @@ if (key_e) {
 	// show_debug_message(map_angle_list[map_angle]);
 	}
 if (key_q) {
-	show_debug_message("you pressed Q")
+	//show_debug_message("you pressed Q " + string(player_x_loc) + " " + string(player_y_loc) )
 	map_angle--;
 	if (map_angle < 0) map_angle = 3;
 	player_angle--;
@@ -305,7 +316,7 @@ key_lft = keyboard_check(vk_left); //tecla izquierda
 key_rgt = keyboard_check(vk_right); //tecla derecha
 
 if (key_up) {
-	// 
+	show_debug_message("you pressed up " + string(floor(player_x_loc)) + " " + string(floor(player_y_loc)) )
 	player_x_loc +=0.1;
 	// change the sprite
 	player_angle = 0;
@@ -313,22 +324,22 @@ if (key_up) {
 	}
 	
 if (key_dwn) {
-	// 
+	show_debug_message("you pressed dwn " + string(floor(player_x_loc)) + " " + string(floor(player_y_loc)) )
 	player_x_loc -=0.1;
 	player_angle = 1;
 	scale_factor = 1;
 	}
 
 if (key_lft) {
-	// 
+	show_debug_message("you pressed lft " + string(floor(player_x_loc)) + " " + string(floor(player_y_loc)) )
 	player_y_loc +=0.1;
-	player_angle = 0;
+	player_angle = 2;
 	scale_factor = -1;
 	}
 if (key_rgt) {
-	// 
+	show_debug_message("you pressed rgt " + string(floor(player_x_loc)) + " " + string(floor(player_y_loc)) )
 	player_y_loc -=0.1;
-	player_angle = 1;
+	player_angle = 4;
 	scale_factor = -1;
 	}
 
