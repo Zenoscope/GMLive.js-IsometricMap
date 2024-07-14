@@ -2,8 +2,14 @@
 // stuff to do:
 
 // https://yal.cc/r/gml/
+// https://yal.cc/introducing-gmlive/
 
 /*
+
+Ideas:
+Make a cell/sprite/object which you can't drive through.
+
+
 2) DONE   load image for each different sprite
 3) Animate image for each sprite
 	//(change image to image + (total_frames/4) (+ 1?) modulus total_frames
