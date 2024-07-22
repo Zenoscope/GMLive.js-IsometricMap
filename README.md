@@ -20,3 +20,12 @@ obj_1..obj_9 (some extra empty objects)
 fnt_test (used by default)
 
 You can add new sprites\backgrounds\fonts via the according built-in functions (sprite_add, background_add, …). Data URI (“data:image/png;base64,…”) format is supported.
+
+Collision masks:
+https://gamemaker.io/en/blog/playing-with-collision-masks
+
+Image editor:
+https://viliusle.github.io/miniPaint/
+
+z depth (alspo look at z tilting)
+https://forum.gamemaker.io/index.php?threads/sprite-depth.45953/
