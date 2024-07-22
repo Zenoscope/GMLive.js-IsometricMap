@@ -29,3 +29,6 @@ https://viliusle.github.io/miniPaint/
 
 z depth (alspo look at z tilting)
 https://forum.gamemaker.io/index.php?threads/sprite-depth.45953/
+
+Game optimisation:
+https://gamemaker.io/locomotive/@@kk4ze-1'%22@@tmpiz/preview/en/tutorials/how-to-optimise-your-games
