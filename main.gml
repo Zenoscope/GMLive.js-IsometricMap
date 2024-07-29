@@ -197,36 +197,43 @@ map_array = [
 	[ 0, 0, 0, 2, 0, 0, 2],
 	[ 0, 0, 2, 2, 2, 0, 0],
 	[ 0, 2, 2, 2, 2, 2, 0],
-	
-	[ 2, 2, 2, 2, 2, 2, 2],
-	
+	[ 2, 2, 2, 2, 2, 2, 2],// map middle
 	[ 0, 0, 2, 2, 2, 0, 0],
 	[ 0, 0, 2, 2, 2, 0, 0],
 	[ 0, 0, 2, 2, 2, 0, 0]
 	];
 
-// map array that the base array is copied to
+// can be used for interiors as well.
+
+// ground, eg road etc
 // map_rotated = map_array;
-map_rotated = [
+map_layer1 = [
 	[ -1, -1, -1, -1, -1, -1, -1],
 	[ -1, -1, -1, -1, -1, -1, -1],
 	[ -1, -1, -1, -1, -1, -1, -1],
-	
 	[ -1, -1, -1, -1, -1, -1, -1],
-	
 	[ -1, -1, -1, -1, -1, -1, -1],
 	[ -1, -1, -1, -1, -1, -1, -1],
 	[ -1, -1, -1, -1, -1, -1, -1],
 	];
 
-// array of objects/instances to display
-map_obj = [
+// buildings (main thing to collide/overlay with)
+map_layer2 = [
 	[ -1, -1, -1, -1, -1, -1, -1],
 	[ -1, -1, -1, -1, -1, -1, -1],
 	[ -1, -1, -1, -1, -1, -1, -1],
-	
 	[ -1, -1, -1, -1, -1, -1, -1],
-	
+	[ -1, -1, -1, -1, -1, -1, -1],
+	[ -1, -1, -1, -1, -1, -1, -1],
+	[ -1, -1, -1, -1, -1, -1, -1],
+	];
+
+// street furniture etc
+map_layer3 = [
+	[ -1, -1, -1, -1, -1, -1, -1],
+	[ -1, -1, -1, -1, -1, -1, -1],
+	[ -1, -1, -1, -1, -1, -1, -1],
+	[ -1, -1, -1, -1, -1, -1, -1],
 	[ -1, -1, -1, -1, -1, -1, -1],
 	[ -1, -1, -1, -1, -1, -1, -1],
 	[ -1, -1, -1, -1, -1, -1, -1],
@@ -249,7 +256,7 @@ y_scale = (global.iso_cell_w * 2)/512;
 
 rotate_map();
 
-var _draw_map = false;
+_drawn_map = false;
 
 //*************
 #define draw
@@ -257,13 +264,15 @@ var _draw_map = false;
 // draws the map
 // i is outer loop. goes along the top right 0 to 6
 
-for (var i = 0; i < array_length_1d(map_rotated); i++)
-for (var k = 0; k < array_length_1d(map_rotated[0]); k++) {
+for (var i = 0; i < array_length_1d(map_layer1); i++)
+for (var k = 0; k < array_length_1d(map_layer1[0]); k++) {
     var cx = i + 0.5;
     var cy = k + 0.5;
     
-    
-    var map_sprite = map_rotated[i][k];
+    // repeat this for layer2 and 3
+    // ideally the sprites will be in an array and this will
+    // be a function.
+    var map_sprite = map_layer1[i][k];
     // function which chooses the shape from another array/dsmap/list of shapes
     switch(map_sprite){
         case 0:
@@ -283,12 +292,19 @@ for (var k = 0; k < array_length_1d(map_rotated[0]); k++) {
     //not the right way to do it
     // needs a flag that the map has been rotated
     //instance_destroy(map_obj[i][k]);
-    
-	map_obj[i][k] = instance_create(iso_to_scr_x(cx,cy),iso_to_scr_y(cx,cy),obj_blank);
-	map_obj[i][k].sprite_index = display_sprite;
-	map_obj[i][k].image_xscale = x_scale;
-	map_obj[i][k].image_yscale = y_scale;
-	map_obj[i][k].depth = -(floor(iso_to_scr_y(cx,cy)));
+    if (_drawn_map == false) {
+    //instance_destroy(map_obj[i][k]);
+    	map_obj[i][k] = instance_create(iso_to_scr_x(cx,cy),iso_to_scr_y(cx,cy),obj_blank);
+		map_obj[i][k].sprite_index = display_sprite;
+		map_obj[i][k].image_xscale = x_scale;
+		map_obj[i][k].image_yscale = y_scale;
+		map_obj[i][k].depth = -(floor(iso_to_scr_y(cx,cy)));
+	    }
+	 else if (_drawn_map == true) {
+	 	map_obj[i][k].sprite_index = display_sprite;
+    	}
+    	
+    // text stuff for displaying depth
 	//draw_set_colour($880088);
 	// array location
 	//draw_text(iso_to_scr_x(cx,cy), iso_to_scr_y(cx,cy) - 20,k + "," + i);
@@ -296,6 +312,7 @@ for (var k = 0; k < array_length_1d(map_rotated[0]); k++) {
 	//draw_text(iso_to_scr_x(cx,cy), iso_to_scr_y(cx,cy) + 20,map_obj[i][k].depth);
     }
 
+_drawn_map = true;
 
 player.sprite_index = spr_player[player_sprite];
 player.image_xscale = x_scale * scale_factor;
@@ -506,7 +523,9 @@ for (var k = 0; k < array_length_1d(map_array[0]); k++) {
 
         // show_debug_message("i:" + string(i) + " k: " + string(k) + "=> " + "new X:" + string(new_x) + "new y: " + string(new_y))
         // map_rotated[i][k] = map_array[i][k];
-        map_rotated[new_x][new_y] = map_array[i][k];
+        map_layer1[new_x][new_y] = map_array[i][k];
+        map_layer2[new_x][new_y] = map_array[i][k];
+        map_layer3[new_x][new_y] = map_array[i][k];
         //instance_destroy(map_obj[i][k]);    
         // x1 and y1 are the new array positions.
         }
